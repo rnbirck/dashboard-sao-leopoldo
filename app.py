@@ -102,10 +102,6 @@ def main():
     """Função principal que executa a aplicação Streamlit."""
 
     # ==============================================================================
-    # BLOCO DE CARREGAMENTO DAS VARIÁVEIS DE AMBIENTE
-    # ==============================================================================
-
-    # ==============================================================================
     # CONFIGURAÇÃO DA PÁGINA
     # ==============================================================================
     st.set_page_config(
@@ -122,7 +118,7 @@ def main():
     # ==============================================================================
     # CARREGAMENTO DE TODOS OS DADOS (UPFRONT)
     # ==============================================================================
-    # Carrega TODOS os DFs necessários para a aplicação inteira de uma só vez.
+
     with st.spinner("Carregando todos os dados da aplicação... Por favor, aguarde."):
         df_caged = carregar_dados_emprego_municipios(
             municipios=municipios_de_interesse, anos=anos_de_interesse
