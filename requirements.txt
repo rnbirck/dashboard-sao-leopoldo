@@ -2,4 +2,4 @@ streamlit==1.49.1
 streamlit-option-menu==0.4.0
 python-dotenv==1.0.1
 
-dashboard_core @ git+https://github.com/rnbirck/dashboard-prefeituras-core.git#subdirectory=dashboard_core
+dashboard_core @ git+https://github.com/rnbirck/dashboard-prefeituras-core.git
