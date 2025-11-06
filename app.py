@@ -4,6 +4,7 @@
 # BLOCO 1: IMPORTS DE TERCEIROS (PIP)
 # ==============================================================================
 import streamlit as st
+import dashboard_core
 from dotenv import load_dotenv
 from streamlit_option_menu import option_menu
 from dotenv import load_dotenv  # noqa: F811
@@ -27,17 +28,17 @@ from src.config import (  # noqa: E402
 # --- Imports do PACOTE (do 'dashboard_core' instalado via requirements.txt) ---
 # Todas as 'views', 'utils' e 'data_loader' vêm do seu pacote central
 from dashboard_core.views.home import show_page_home  # noqa: E402
-from dashboard_core.views.emprego import show_page_emprego  # noqa: E402
-from dashboard_core.views.comercio_exterior import show_page_comex  # noqa: E402
-from dashboard_core.views.seguranca import show_page_seguranca  # noqa: E402
-from dashboard_core.views.assistencia_social import show_page_assistencia_social  # noqa: E402
-from dashboard_core.views.financas import show_page_financas  # noqa: E402
-from dashboard_core.views.empresas import show_page_empresas_ativas  # noqa: E402
-from dashboard_core.views.educacao import show_page_educacao  # noqa: E402
-from dashboard_core.views.saude import show_page_saude  # noqa: E402
-from dashboard_core.views.pib import show_page_pib  # noqa: E402
-from dashboard_core.views.demografia import show_page_demografia  # noqa: E402
-from dashboard_core.views.dados import show_page_dados  # noqa: E402
+# from dashboard_core.views.emprego import show_page_emprego  # noqa: E402
+# from dashboard_core.views.comercio_exterior import show_page_comex  # noqa: E402
+# from dashboard_core.views.seguranca import show_page_seguranca  # noqa: E402
+# from dashboard_core.views.assistencia_social import show_page_assistencia_social  # noqa: E402
+# from dashboard_core.views.financas import show_page_financas  # noqa: E402
+# from dashboard_core.views.empresas import show_page_empresas_ativas  # noqa: E402
+# from dashboard_core.views.educacao import show_page_educacao  # noqa: E402
+# from dashboard_core.views.saude import show_page_saude  # noqa: E402
+# from dashboard_core.views.pib import show_page_pib  # noqa: E402
+# from dashboard_core.views.demografia import show_page_demografia  # noqa: E402
+# from dashboard_core.views.dados import show_page_dados  # noqa: E402
 
 # noqa: E402
 from dashboard_core.utils import carregar_css  # noqa: E402
