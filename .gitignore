@@ -1,0 +1,9 @@
+*.csv
+credentials.json
+.streamlit/
+.env
+.env.*
+.pyc
+pycache/
+venv/
+*.egg-info/
