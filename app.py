@@ -455,6 +455,7 @@ def main():
                 df_saude_mensal=df_saude_mensal_filtrado,
                 df_populacao_densidade=df_populacao_densidade_filtrado,
                 df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
+                municipio_de_interesse=municipios_de_interesse,
             )
 
         # if pagina_selecionada == "Emprego":
