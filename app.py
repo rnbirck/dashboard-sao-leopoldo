@@ -108,7 +108,9 @@ def main():
     # ==============================================================================
     # CONFIGURAÇÃO DA PÁGINA
     # ==============================================================================
-    st.set_page_config(layout="wide", page_title="Dashboard CEI ", page_icon="📊")
+    st.set_page_config(
+        layout="wide", page_title=f"Dashboard {municipio_de_interesse}", page_icon="📊"
+    )
     carregar_css("assets/style.css")
 
     # ==============================================================================
@@ -458,7 +460,7 @@ def main():
                 df_saude_mensal=df_saude_mensal_filtrado,
                 df_populacao_densidade=df_populacao_densidade_filtrado,
                 df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
-                municipio_de_interesse=municipios_de_interesse,
+                municipio_de_interesse=municipio_de_interesse,
             )
 
         if pagina_selecionada == "Emprego":
