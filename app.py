@@ -4,7 +4,6 @@
 # BLOCO 1: IMPORTS DE TERCEIROS (PIP)
 # ==============================================================================
 import streamlit as st
-import dashboard_core
 from dotenv import load_dotenv
 from streamlit_option_menu import option_menu
 from dotenv import load_dotenv  # noqa: F811
@@ -14,38 +13,42 @@ load_dotenv()
 # BLOCO 2: IMPORTS DA APLICAÇÃO (LOCAIS E DO PACOTE CORE)
 # ==============================================================================
 
-# --- Imports LOCAIS (do 'src/config.py' deste repositório) ---
-# Este é o ÚNICO import que deve vir de 'src'
+# --- Imports LOCAIS (do 'src/config.py') ---
 from src.config import (  # noqa: E402
-    municipio_de_interesse,  # noqa: E402
-    municipios_de_interesse,  # noqa: E402
-    anos_de_interesse,  # noqa: E402
-    anos_comex,  # noqa: E402
-    CORES_MUNICIPIOS,  # noqa: E402
-)  # noqa: E402
+    municipio_de_interesse,
+    municipios_de_interesse,
+    anos_de_interesse,
+    anos_comex,
+    CORES_MUNICIPIOS,
+    ordem_instrucao,
+    ordem_tamanho_estabelecimentos,
+)
 
 
-# --- Imports do PACOTE (do 'dashboard_core' instalado via requirements.txt) ---
+# --- Imports do PACOTE dashboard_core ---
 # Todas as 'views', 'utils' e 'data_loader' vêm do seu pacote central
-from dashboard_core.views.home import show_page_home  # noqa: E402
-# from dashboard_core.views.emprego import show_page_emprego  # noqa: E402
-# from dashboard_core.views.comercio_exterior import show_page_comex  # noqa: E402
-# from dashboard_core.views.seguranca import show_page_seguranca  # noqa: E402
-# from dashboard_core.views.assistencia_social import show_page_assistencia_social  # noqa: E402
-# from dashboard_core.views.financas import show_page_financas  # noqa: E402
-# from dashboard_core.views.empresas import show_page_empresas_ativas  # noqa: E402
-# from dashboard_core.views.educacao import show_page_educacao  # noqa: E402
-# from dashboard_core.views.saude import show_page_saude  # noqa: E402
-# from dashboard_core.views.pib import show_page_pib  # noqa: E402
-# from dashboard_core.views.demografia import show_page_demografia  # noqa: E402
-# from dashboard_core.views.dados import show_page_dados  # noqa: E402
+from dashboard_core.views.home import show_page_home  # type: ignore # noqa: E402
+from dashboard_core.views.emprego import show_page_emprego, set_emprego_config  # type: ignore # noqa: E402
+from dashboard_core.views.comercio_exterior import (  # type: ignore # noqa: E402
+    show_page_comex,
+    set_comercio_exterior_config,
+)
+from dashboard_core.views.seguranca import show_page_seguranca, set_seguranca_config  # type: ignore # noqa: E402
+from dashboard_core.views.assistencia_social import (  # type: ignore  # noqa: E402
+    show_page_assistencia_social,
+    set_assistencia_social_config,
+)
+from dashboard_core.views.financas import show_page_financas, set_financas_config  # noqa: E402 #type: ignore
+from dashboard_core.views.empresas import show_page_empresas_ativas, set_empresas_config  # type: ignore # noqa: E402
+from dashboard_core.views.educacao import show_page_educacao, set_educacao_config  # noqa: E402 # type: ignore
+from dashboard_core.views.saude import show_page_saude, set_saude_config  # noqa: E402 # type: ignore
+from dashboard_core.views.pib import show_page_pib, set_pib_config  # noqa: E402 # type: ignore
+from dashboard_core.views.demografia import show_page_demografia, set_demografia_config  # noqa: E402 # type: ignore
+from dashboard_core.views.dados import show_page_dados  # noqa: E402 # type: ignore
+from dashboard_core.utils import carregar_css  # type: ignore # noqa: E402
+from dashboard_core.utils import manter_posicao_scroll  # type: ignore # noqa: E402
 
-# noqa: E402
-from dashboard_core.utils import carregar_css  # noqa: E402
-from dashboard_core.utils import manter_posicao_scroll  # noqa: E402
-
-# noqa: E402
-from dashboard_core.data_loader import (  # noqa: E402
+from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_emprego_municipios,  # noqa: E402
     carregar_dados_vinculos_municipios,  # noqa: E402
     carregar_dados_comex_mensal,  # noqa: E402
@@ -92,7 +95,7 @@ from dashboard_core.data_loader import (  # noqa: E402
     carregar_dados_saude_leitos,  # noqa: E402
     carregar_dados_saude_medicos,  # noqa: E402
     carregar_dados_saude_vacinas,  # noqa: E402
-)  # noqa: E402
+)
 
 
 def main():
@@ -458,154 +461,170 @@ def main():
                 municipio_de_interesse=municipios_de_interesse,
             )
 
-        # if pagina_selecionada == "Emprego":
-        #     show_page_emprego(
-        #         df_caged=df_caged_filtrado,
-        #         df_caged_cnae=df_caged_cnae,
-        #         df_caged_faixa_etaria=df_caged_faixa_etaria,
-        #         df_caged_grau_instrucao=df_caged_grau_instrucao,
-        #         df_caged_raca_cor=df_caged_raca_cor,
-        #         df_caged_sexo=df_caged_sexo,
-        #         municipio_de_interesse=municipio_de_interesse,
-        #         df_vinculos=df_vinculos_filtrado,
-        #         df_vinculos_cnae=df_vinculos_cnae,
-        #         df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
-        #         df_vinculos_grau_instrucao=df_vinculos_grau_instrucao,
-        #         df_vinculos_raca_cor=df_vinculos_raca_cor,
-        #         df_vinculos_sexo=df_vinculos_sexo,
-        #         df_renda_mun=df_renda_filtrado,
-        #         df_renda_cnae=df_renda_cnae,
-        #         df_renda_sexo=df_renda_sexo,
-        #     )
+        if pagina_selecionada == "Emprego":
+            set_emprego_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, ordem_instrucao
+            )
+            show_page_emprego(
+                df_caged=df_caged_filtrado,
+                df_caged_cnae=df_caged_cnae,
+                df_caged_faixa_etaria=df_caged_faixa_etaria,
+                df_caged_grau_instrucao=df_caged_grau_instrucao,
+                df_caged_raca_cor=df_caged_raca_cor,
+                df_caged_sexo=df_caged_sexo,
+                municipio_de_interesse=municipio_de_interesse,
+                df_vinculos=df_vinculos_filtrado,
+                df_vinculos_cnae=df_vinculos_cnae,
+                df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
+                df_vinculos_grau_instrucao=df_vinculos_grau_instrucao,
+                df_vinculos_raca_cor=df_vinculos_raca_cor,
+                df_vinculos_sexo=df_vinculos_sexo,
+                df_renda_mun=df_renda_filtrado,
+                df_renda_cnae=df_renda_cnae,
+                df_renda_sexo=df_renda_sexo,
+            )
 
-        # elif pagina_selecionada == "Empresas":
-        #     show_page_empresas_ativas(
-        #         df_cnpj=df_cnpj_total_filtrado,
-        #         df_cnpj_cnae=df_cnpj_cnae,
-        #         df_cnpj_cnae_saldo=df_cnpj_cnae_saldo,
-        #         df_mei=df_mei_total_filtrado,
-        #         df_mei_cnae=df_mei_cnae,
-        #         df_mei_cnae_saldo=df_mei_cnae_saldo,
-        #         municipio_de_interesse=municipio_de_interesse,
-        #         df_estabelecimentos_cnae=df_estabelecimentos_cnae,
-        #         df_estabelecimentos_mun=df_estabelecimentos_filtrado,
-        #         df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
-        #     )
+        elif pagina_selecionada == "Empresas":
+            set_empresas_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, ordem_tamanho_estabelecimentos
+            )
+            show_page_empresas_ativas(
+                df_cnpj=df_cnpj_total_filtrado,
+                df_cnpj_cnae=df_cnpj_cnae,
+                df_cnpj_cnae_saldo=df_cnpj_cnae_saldo,
+                df_mei=df_mei_total_filtrado,
+                df_mei_cnae=df_mei_cnae,
+                df_mei_cnae_saldo=df_mei_cnae_saldo,
+                municipio_de_interesse=municipio_de_interesse,
+                df_estabelecimentos_cnae=df_estabelecimentos_cnae,
+                df_estabelecimentos_mun=df_estabelecimentos_filtrado,
+                df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
+            )
 
-        # elif pagina_selecionada == "Comércio Exterior":
-        #     show_page_comex(
-        #         df_comex_ano_filtrado,
-        #         df_comex_mensal_filtrado,
-        #         df_comex_municipio,
-        #         municipios_selecionados_global,
-        #         municipio_de_interesse,
-        #     )
+        elif pagina_selecionada == "Comércio Exterior":
+            set_comercio_exterior_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, anos_de_interesse
+            )
+            show_page_comex(
+                df_comex_ano_filtrado,
+                df_comex_mensal_filtrado,
+                df_comex_municipio,
+                municipios_selecionados_global,
+                municipio_de_interesse,
+            )
 
-        # elif pagina_selecionada == "Segurança":
-        #     show_page_seguranca(df_seguranca_filtrado, df_seguranca_taxa_filtrado)
+        elif pagina_selecionada == "Segurança":
+            set_seguranca_config(CORES_MUNICIPIOS)
+            show_page_seguranca(df_seguranca_filtrado, df_seguranca_taxa_filtrado)
 
-        # elif pagina_selecionada == "Assistência Social":
-        #     show_page_assistencia_social(
-        #         df_cad=df_cad_filtrado,
-        #         df_bolsa=df_bolsa_familia_filtrado,
-        #         municipio_interesse=municipio_de_interesse,
-        #     )
+        elif pagina_selecionada == "Assistência Social":
+            set_assistencia_social_config(municipio_de_interesse, CORES_MUNICIPIOS)
+            show_page_assistencia_social(
+                df_cad=df_cad_filtrado,
+                df_bolsa=df_bolsa_familia_filtrado,
+                municipio_interesse=municipio_de_interesse,
+            )
 
-        # elif pagina_selecionada == "Educação":
-        #     show_page_educacao(
-        #         df_matriculas=df_educacao_matriculas_filtrado,
-        #         df_rendimento=df_educacao_rendimento_filtrado,
-        #         df_ideb_municipio=df_educacao_ideb_municipio_filtrado,
-        #         df_ideb_escolas=df_educacao_ideb_escolas_filtrado,
-        #         municipios_selecionados_global=municipios_selecionados_global,
-        #     )
+        elif pagina_selecionada == "Educação":
+            set_educacao_config(CORES_MUNICIPIOS)
+            show_page_educacao(
+                df_matriculas=df_educacao_matriculas_filtrado,
+                df_rendimento=df_educacao_rendimento_filtrado,
+                df_ideb_municipio=df_educacao_ideb_municipio_filtrado,
+                df_ideb_escolas=df_educacao_ideb_escolas_filtrado,
+                municipios_selecionados_global=municipios_selecionados_global,
+            )
 
-        # elif pagina_selecionada == "Saúde":
-        #     show_page_saude(
-        #         df_saude_mensal=df_saude_mensal_filtrado,
-        #         df_saude_vacinas=df_saude_vacinas_filtrado,
-        #         df_saude_leitos=df_saude_leitos_filtrado,
-        #         df_saude_medicos=df_saude_medicos_filtrado,
-        #         df_saude_despesas=df_saude_despesas_filtrado,
-        #     )
+        elif pagina_selecionada == "Saúde":
+            set_saude_config(CORES_MUNICIPIOS)
+            show_page_saude(
+                df_saude_mensal=df_saude_mensal_filtrado,
+                df_saude_vacinas=df_saude_vacinas_filtrado,
+                df_saude_leitos=df_saude_leitos_filtrado,
+                df_saude_medicos=df_saude_medicos_filtrado,
+                df_saude_despesas=df_saude_despesas_filtrado,
+            )
 
-        # elif pagina_selecionada == "PIB":
-        #     show_page_pib(df_pib=df_pib_municipios_filtrado)
+        elif pagina_selecionada == "PIB":
+            set_pib_config(CORES_MUNICIPIOS)
+            show_page_pib(df_pib=df_pib_municipios_filtrado)
 
-        # elif pagina_selecionada == "Demografia":
-        #     show_page_demografia(
-        #         df_populacao_densidade=df_populacao_densidade_filtrado,
-        #         df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
-        #     )
+        elif pagina_selecionada == "Demografia":
+            set_demografia_config(municipio_de_interesse, CORES_MUNICIPIOS)
+            show_page_demografia(
+                df_populacao_densidade=df_populacao_densidade_filtrado,
+                df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
+            )
 
-        # elif pagina_selecionada == "Finanças":
-        #     show_page_financas(
-        #         df_financas=df_financas_filtrado,
-        #         df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
-        #         pdf_indicadores=pdf_indicadores,
-        #     )
+        elif pagina_selecionada == "Finanças":
+            set_financas_config(CORES_MUNICIPIOS)
+            show_page_financas(
+                df_financas=df_financas_filtrado,
+                df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
+                pdf_indicadores=pdf_indicadores,
+            )
 
-        # elif pagina_selecionada == "Dados":
-        #     with st.spinner("Carregando os dados para download..."):
-        #         show_page_dados(
-        #             # --- Emprego ---
-        #             df_caged=df_caged_filtrado,
-        #             df_caged_cnae=df_caged_cnae,
-        #             df_caged_faixa_etaria=df_caged_faixa_etaria,
-        #             df_caged_raca_cor=df_caged_raca_cor,
-        #             df_caged_grau_instrucao=df_caged_grau_instrucao,
-        #             df_caged_sexo=df_caged_sexo,
-        #             df_vinculos=df_vinculos_filtrado,
-        #             df_vinculos_cnae=df_vinculos_cnae,
-        #             df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
-        #             df_vinculos_grau_instrucao=df_vinculos_grau_instrucao,
-        #             df_vinculos_raca_cor=df_vinculos_raca_cor,
-        #             df_vinculos_sexo=df_vinculos_sexo,
-        #             df_renda_mun=df_renda_filtrado,
-        #             df_renda_sexo=df_renda_sexo,
-        #             df_renda_cnae=df_renda_cnae,
-        #             municipio_de_interesse=municipio_de_interesse,
-        #             # --- Empresas ---
-        #             df_cnpj_mun=df_cnpj_total_filtrado,
-        #             df_cnpj_cnae=df_cnpj_cnae,
-        #             df_cnpj_cnae_saldo=df_cnpj_cnae_saldo,
-        #             df_mei_mun=df_mei_total_filtrado,
-        #             df_mei_cnae=df_mei_cnae,
-        #             df_mei_cnae_saldo=df_mei_cnae_saldo,
-        #             df_estabelecimentos_mun=df_estabelecimentos_filtrado,
-        #             df_estabelecimentos_cnae=df_estabelecimentos_cnae,
-        #             df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
-        #             # --- Comércio Exterior ---
-        #             df_comex_anual_mun=df_comex_ano_filtrado,
-        #             df_comex_mensal_mun=df_comex_mensal_filtrado,
-        #             df_comex_raw_municipio_foco=df_comex_municipio,
-        #             # --- Segurança ---
-        #             df_seguranca_mun=df_seguranca_filtrado,
-        #             df_seguranca_taxa_mun=df_seguranca_taxa_filtrado,
-        #             # --- Assistência Social ---
-        #             df_cad=df_cad_filtrado,
-        #             df_bolsa=df_bolsa_familia_filtrado,
-        #             # --- Educação ---
-        #             df_educacao_matriculas=df_educacao_matriculas,
-        #             df_educacao_rendimento=df_educacao_rendimento,
-        #             df_educacao_ideb_municipio=df_educacao_ideb_municipio,
-        #             df_educacao_ideb_escolas=df_educacao_ideb_escolas,
-        #             # --- Saúde ---
-        #             df_saude_mensal=df_saude_mensal,
-        #             df_saude_vacinas=df_saude_vacinas,
-        #             df_saude_despesas=df_saude_despesas,
-        #             df_saude_leitos=df_saude_leitos,
-        #             df_saude_medicos=df_saude_medicos,
-        #             # --- PIB ---
-        #             df_pib_municipios=df_pib_municipios_filtrado,
-        #             # --- Demografia ---
-        #             df_populacao_densidade=df_populacao_densidade_filtrado,
-        #             df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
-        #             # --- Finanças ---
-        #             df_financas=df_financas_filtrado,
-        #             df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
-        #             pdf_indicadores=pdf_indicadores,
-        #         )
+        elif pagina_selecionada == "Dados":
+            with st.spinner("Carregando os dados para download..."):
+                show_page_dados(
+                    # --- Emprego ---
+                    df_caged=df_caged_filtrado,
+                    df_caged_cnae=df_caged_cnae,
+                    df_caged_faixa_etaria=df_caged_faixa_etaria,
+                    df_caged_raca_cor=df_caged_raca_cor,
+                    df_caged_grau_instrucao=df_caged_grau_instrucao,
+                    df_caged_sexo=df_caged_sexo,
+                    df_vinculos=df_vinculos_filtrado,
+                    df_vinculos_cnae=df_vinculos_cnae,
+                    df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
+                    df_vinculos_grau_instrucao=df_vinculos_grau_instrucao,
+                    df_vinculos_raca_cor=df_vinculos_raca_cor,
+                    df_vinculos_sexo=df_vinculos_sexo,
+                    df_renda_mun=df_renda_filtrado,
+                    df_renda_sexo=df_renda_sexo,
+                    df_renda_cnae=df_renda_cnae,
+                    municipio_de_interesse=municipio_de_interesse,
+                    # --- Empresas ---
+                    df_cnpj_mun=df_cnpj_total_filtrado,
+                    df_cnpj_cnae=df_cnpj_cnae,
+                    df_cnpj_cnae_saldo=df_cnpj_cnae_saldo,
+                    df_mei_mun=df_mei_total_filtrado,
+                    df_mei_cnae=df_mei_cnae,
+                    df_mei_cnae_saldo=df_mei_cnae_saldo,
+                    df_estabelecimentos_mun=df_estabelecimentos_filtrado,
+                    df_estabelecimentos_cnae=df_estabelecimentos_cnae,
+                    df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
+                    # --- Comércio Exterior ---
+                    df_comex_anual_mun=df_comex_ano_filtrado,
+                    df_comex_mensal_mun=df_comex_mensal_filtrado,
+                    df_comex_raw_municipio_foco=df_comex_municipio,
+                    # --- Segurança ---
+                    df_seguranca_mun=df_seguranca_filtrado,
+                    df_seguranca_taxa_mun=df_seguranca_taxa_filtrado,
+                    # --- Assistência Social ---
+                    df_cad=df_cad_filtrado,
+                    df_bolsa=df_bolsa_familia_filtrado,
+                    # --- Educação ---
+                    df_educacao_matriculas=df_educacao_matriculas,
+                    df_educacao_rendimento=df_educacao_rendimento,
+                    df_educacao_ideb_municipio=df_educacao_ideb_municipio,
+                    df_educacao_ideb_escolas=df_educacao_ideb_escolas,
+                    # --- Saúde ---
+                    df_saude_mensal=df_saude_mensal,
+                    df_saude_vacinas=df_saude_vacinas,
+                    df_saude_despesas=df_saude_despesas,
+                    df_saude_leitos=df_saude_leitos,
+                    df_saude_medicos=df_saude_medicos,
+                    # --- PIB ---
+                    df_pib_municipios=df_pib_municipios_filtrado,
+                    # --- Demografia ---
+                    df_populacao_densidade=df_populacao_densidade_filtrado,
+                    df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
+                    # --- Finanças ---
+                    df_financas=df_financas_filtrado,
+                    df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
+                    pdf_indicadores=pdf_indicadores,
+                )
 
         manter_posicao_scroll()
 
