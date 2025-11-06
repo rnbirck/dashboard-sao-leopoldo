@@ -10,27 +10,41 @@ from dotenv import load_dotenv  # noqa: F811
 
 load_dotenv()
 # ==============================================================================
-# BLOCO 2: IMPORTS DA APLICAÇÃO (SRC)
+# BLOCO 2: IMPORTS DA APLICAÇÃO (LOCAIS E DO PACOTE CORE)
 # ==============================================================================
-from src.views.home import show_page_home  # noqa: E402
-from src.views.emprego import show_page_emprego  # noqa: E402
-from src.views.comercio_exterior import show_page_comex  # noqa: E402
-from src.views.seguranca import show_page_seguranca  # noqa: E402
-from src.views.assistencia_social import show_page_assistencia_social  # noqa: E402
-from src.views.financas import show_page_financas  # noqa: E402
-from src.views.empresas import show_page_empresas_ativas  # noqa: E402
-from src.views.educacao import show_page_educacao  # noqa: E402
-from src.views.saude import show_page_saude  # noqa: E402
-from src.views.pib import show_page_pib  # noqa: E402
-from src.views.demografia import show_page_demografia  # noqa: E402
-from src.views.dados import show_page_dados  # noqa: E402
+
+# --- Imports LOCAIS (do 'src/config.py' deste repositório) ---
+# Este é o ÚNICO import que deve vir de 'src'
+from src.config import (  # noqa: E402
+    municipio_de_interesse,  # noqa: E402
+    municipios_de_interesse,  # noqa: E402
+    anos_de_interesse,  # noqa: E402
+    anos_comex,  # noqa: E402
+    CORES_MUNICIPIOS,  # noqa: E402
+)  # noqa: E402
+
+
+# --- Imports do PACOTE (do 'dashboard_core' instalado via requirements.txt) ---
+# Todas as 'views', 'utils' e 'data_loader' vêm do seu pacote central
+from dashboard_core.views.home import show_page_home  # noqa: E402
+from dashboard_core.views.emprego import show_page_emprego  # noqa: E402
+from dashboard_core.views.comercio_exterior import show_page_comex  # noqa: E402
+from dashboard_core.views.seguranca import show_page_seguranca  # noqa: E402
+from dashboard_core.views.assistencia_social import show_page_assistencia_social  # noqa: E402
+from dashboard_core.views.financas import show_page_financas  # noqa: E402
+from dashboard_core.views.empresas import show_page_empresas_ativas  # noqa: E402
+from dashboard_core.views.educacao import show_page_educacao  # noqa: E402
+from dashboard_core.views.saude import show_page_saude  # noqa: E402
+from dashboard_core.views.pib import show_page_pib  # noqa: E402
+from dashboard_core.views.demografia import show_page_demografia  # noqa: E402
+from dashboard_core.views.dados import show_page_dados  # noqa: E402
 
 # noqa: E402
-from src.utils import carregar_css  # noqa: E402
-from src.utils import manter_posicao_scroll  # noqa: E402
+from dashboard_core.utils import carregar_css  # noqa: E402
+from dashboard_core.utils import manter_posicao_scroll  # noqa: E402
 
 # noqa: E402
-from src.data_loader import (  # noqa: E402
+from dashboard_core.data_loader import (  # noqa: E402
     carregar_dados_emprego_municipios,  # noqa: E402
     carregar_dados_vinculos_municipios,  # noqa: E402
     carregar_dados_comex_mensal,  # noqa: E402
@@ -77,13 +91,6 @@ from src.data_loader import (  # noqa: E402
     carregar_dados_saude_leitos,  # noqa: E402
     carregar_dados_saude_medicos,  # noqa: E402
     carregar_dados_saude_vacinas,  # noqa: E402
-)  # noqa: E402
-from src.config import (  # noqa: E402
-    municipio_de_interesse,  # noqa: E402
-    municipios_de_interesse,  # noqa: E402
-    anos_de_interesse,  # noqa: E402
-    anos_comex,  # noqa: E402
-    CORES_MUNICIPIOS,  # noqa: E402
 )  # noqa: E402
 
 
