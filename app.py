@@ -51,6 +51,7 @@ from dashboard_core.utils import manter_posicao_scroll  # type: ignore # noqa: E
 from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_emprego_municipios,  # noqa: E402
     carregar_dados_vinculos_municipios,  # noqa: E402
+    carregar_dados_estoque_municipios,
     carregar_dados_comex_mensal,  # noqa: E402
     carregar_dados_seguranca,  # noqa: E402
     carregar_dados_CAD,  # noqa: E402
@@ -70,6 +71,7 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_emprego_raca_cor,  # noqa: E402
     carregar_dados_emprego_grau_instrucao,  # noqa: E402
     carregar_dados_emprego_sexo,  # noqa: E402
+    carregar_dados_estoque_cnae,
     carregar_dados_vinculos_cnae,  # noqa: E402
     carregar_dados_vinculos_sexo,  # noqa: E402
     carregar_dados_vinculos_faixa_etaria,  # noqa: E402
@@ -121,6 +123,9 @@ def main():
 
     with st.spinner("Carregando todos os dados da aplicação... Por favor, aguarde."):
         df_caged = carregar_dados_emprego_municipios(
+            municipios=municipios_de_interesse, anos=anos_de_interesse
+        )
+        df_estoque = carregar_dados_estoque_municipios(
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
         df_comex_mensal = carregar_dados_comex_mensal(
@@ -181,6 +186,9 @@ def main():
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_caged_sexo = carregar_dados_emprego_sexo(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
+        df_estoque_cnae = carregar_dados_estoque_cnae(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_vinculos_cnae = carregar_dados_vinculos_cnae(
@@ -357,6 +365,9 @@ def main():
     df_caged_filtrado = df_caged[
         df_caged["municipio"].isin(municipios_selecionados_global)
     ]
+    df_estoque_filtrado = df_estoque[
+        df_estoque["municipio"].isin(municipios_selecionados_global)
+    ]
     df_vinculos_filtrado = df_vinculos[
         df_vinculos["municipio"].isin(municipios_selecionados_global)
     ]
@@ -442,6 +453,7 @@ def main():
         if pagina_selecionada == "Início":
             show_page_home(
                 df_emprego=df_caged_filtrado,
+                df_estoque=df_estoque_filtrado,
                 df_comex=df_comex_mensal_filtrado,
                 df_seguranca=df_seguranca_filtrado,
                 df_assistencia_cad=df_cad_filtrado,
@@ -471,6 +483,8 @@ def main():
                 df_caged_raca_cor=df_caged_raca_cor,
                 df_caged_sexo=df_caged_sexo,
                 municipio_de_interesse=municipio_de_interesse,
+                df_estoque=df_estoque_filtrado,
+                df_estoque_cnae=df_estoque_cnae,
                 df_vinculos=df_vinculos_filtrado,
                 df_vinculos_cnae=df_vinculos_cnae,
                 df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
@@ -572,6 +586,8 @@ def main():
                     df_caged_raca_cor=df_caged_raca_cor,
                     df_caged_grau_instrucao=df_caged_grau_instrucao,
                     df_caged_sexo=df_caged_sexo,
+                    df_estoque=df_estoque_filtrado,
+                    df_estoque_cnae=df_estoque_cnae,
                     df_vinculos=df_vinculos_filtrado,
                     df_vinculos_cnae=df_vinculos_cnae,
                     df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
