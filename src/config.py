@@ -7,7 +7,7 @@ municipios_de_interesse = [
 ]
 anos_de_interesse = tuple(range(2021, 2026))
 
-anos_comex = tuple(range(min(anos_de_interesse) - 1, max(anos_de_interesse) + 1))
+anos_historico = tuple(range(min(anos_de_interesse) - 1, max(anos_de_interesse) + 1))
 
 CORES_MUNICIPIOS = {
     "São Leopoldo": "#4C82F7",  # Azul Google
@@ -40,4 +40,20 @@ ordem_tamanho_estabelecimentos = [
     "De 250 a 499",
     "De 500 a 999",
     "1000 ou Mais",
+]
+
+ordem_faixa_salarial = [
+    "Até 0,50 SM",
+    "0,51 a 1,00 SM",
+    "1,01 a 1,50 SM",
+    "1,51 a 2,00 SM",
+    "2,01 a 3,00 SM",
+    "3,01 a 4,00 SM",
+    "4,01 a 5,00 SM",
+    "5,01 a 7,00 SM",
+    "7,01 a 10,00 SM",
+    "10,01 a 15,00 SM",
+    "15,01 a 20,00 SM",
+    "Mais de 20,00 SM",
+    "Não Classificado",
 ]

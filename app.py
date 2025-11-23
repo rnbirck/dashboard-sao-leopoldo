@@ -18,10 +18,11 @@ from src.config import (  # noqa: E402
     municipio_de_interesse,
     municipios_de_interesse,
     anos_de_interesse,
-    anos_comex,
+    anos_historico,
     CORES_MUNICIPIOS,
     ordem_instrucao,
     ordem_tamanho_estabelecimentos,
+    ordem_faixa_salarial,
 )
 
 
@@ -71,25 +72,31 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_emprego_raca_cor,  # noqa: E402
     carregar_dados_emprego_grau_instrucao,  # noqa: E402
     carregar_dados_emprego_sexo,  # noqa: E402
-    carregar_dados_estoque_cnae,
-    carregar_dados_vinculos_cnae,  # noqa: E402
-    carregar_dados_vinculos_sexo,  # noqa: E402
-    carregar_dados_vinculos_faixa_etaria,  # noqa: E402
-    carregar_dados_vinculos_grau_instrucao,  # noqa: E402
-    carregar_dados_vinculos_raca_cor,  # noqa: E402
+    carregar_dados_estoque_cnae_setor,
+    carregar_dados_estoque_cnae_grupo,
+    carregar_dados_estoque_cnae_subclasse,
+    carregar_dados_estoque_faixa_etaria,
+    carregar_dados_estoque_raca_cor,
+    carregar_dados_estoque_grau_instrucao,
+    carregar_dados_estoque_sexo,
     carregar_dados_renda_municipios,  # noqa: E402
     carregar_dados_renda_cnae,  # noqa: E402
     carregar_dados_renda_sexo,  # noqa: E402
+    carregar_dados_renda_faixa_salarial,  # noqa: E402
     carregar_dados_estabelecimentos_municipios,  # noqa: E402
-    carregar_dados_estabelecimentos_cnae,  # noqa: E402
     carregar_dados_estabelecimentos_tamanho,  # noqa: E402
+    carregar_dados_estabelecimentos_setor,
+    carregar_dados_estabelecimentos_grupo,
+    carregar_dados_estabelecimentos_subclasse,
     carregar_dados_comex_anual,  # noqa: E402
     carregar_dados_comex_municipio,  # noqa: E402
     carregar_dados_seguranca_taxa,  # noqa: E402
     carregar_dados_cnpj_cnae,  # noqa: E402
+    carregar_dados_cnpj_setor,  # noqa: E402
     carregar_dados_cnpj_cnae_saldo,  # noqa: E402
     carregar_dados_mei_total,  # noqa: E402
     carregar_dados_mei_cnae,  # noqa: E402
+    carregar_dados_mei_setor,  # noqa: E402
     carregar_dados_mei_cnae_saldo,  # noqa: E402
     carregar_dados_educacao_rendimento,  # noqa: E402
     carregar_dados_educacao_ideb_escolas,  # noqa: E402
@@ -129,13 +136,13 @@ def main():
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
         df_comex_mensal = carregar_dados_comex_mensal(
-            municipios=municipios_de_interesse, anos=anos_comex
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_seguranca = carregar_dados_seguranca(
-            municipios=municipios_de_interesse, anos=anos_de_interesse
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_cad = carregar_dados_CAD(
-            municipios=municipios_de_interesse, anos=anos_de_interesse
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_bolsa_familia = carregar_dados_bolsa_familia(
             municipios=municipios_de_interesse, anos=anos_de_interesse
@@ -151,7 +158,7 @@ def main():
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
         df_educacao_matriculas = carregar_dados_educacao_matriculas(
-            municipios=municipios_de_interesse, anos=anos_de_interesse
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_educacao_ideb_municipio = carregar_dados_educacao_ideb_municipio(
             municipios=municipios_de_interesse
@@ -163,7 +170,7 @@ def main():
             municipios=municipios_de_interesse
         )
         df_saude_mensal = carregar_dados_saude_mensal(
-            municipios=municipios_de_interesse, anos=anos_de_interesse
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_populacao_densidade = carregar_dados_populacao_densidade(
             municipios=municipios_de_interesse, anos=anos_de_interesse
@@ -188,22 +195,25 @@ def main():
         df_caged_sexo = carregar_dados_emprego_sexo(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
-        df_estoque_cnae = carregar_dados_estoque_cnae(
+        df_estoque_cnae_setor = carregar_dados_estoque_cnae_setor(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
-        df_vinculos_cnae = carregar_dados_vinculos_cnae(
+        df_estoque_cnae_grupo = carregar_dados_estoque_cnae_grupo(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
-        df_vinculos_faixa_etaria = carregar_dados_vinculos_faixa_etaria(
+        df_estoque_cnae_subclasse = carregar_dados_estoque_cnae_subclasse(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
-        df_vinculos_grau_instrucao = carregar_dados_vinculos_grau_instrucao(
+        df_estoque_faixa_etaria = carregar_dados_estoque_faixa_etaria(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
-        df_vinculos_raca_cor = carregar_dados_vinculos_raca_cor(
+        df_estoque_raca_cor = carregar_dados_estoque_raca_cor(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
-        df_vinculos_sexo = carregar_dados_vinculos_sexo(
+        df_estoque_grau_instrucao = carregar_dados_estoque_grau_instrucao(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
+        df_estoque_sexo = carregar_dados_estoque_sexo(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_renda = carregar_dados_renda_municipios(
@@ -215,12 +225,18 @@ def main():
         df_renda_sexo = carregar_dados_renda_sexo(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
+        df_renda_faixa_salarial = carregar_dados_renda_faixa_salarial(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
 
         # --- Dados Secundários (Página Empresas) ---
         df_cnpj_cnae = carregar_dados_cnpj_cnae(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_cnpj_cnae_saldo = carregar_dados_cnpj_cnae_saldo(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
+        df_cnpj_setor = carregar_dados_cnpj_setor(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_mei_total = carregar_dados_mei_total(
@@ -232,27 +248,37 @@ def main():
         df_mei_cnae_saldo = carregar_dados_mei_cnae_saldo(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
+        df_mei_setor = carregar_dados_mei_setor(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
         df_estabelecimentos = carregar_dados_estabelecimentos_municipios(
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
-        df_estabelecimentos_cnae = carregar_dados_estabelecimentos_cnae(
+        df_estabelecimentos_setor = carregar_dados_estabelecimentos_setor(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
+        df_estabelecimentos_grupo = carregar_dados_estabelecimentos_grupo(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
+        df_estabelecimentos_subclasse = carregar_dados_estabelecimentos_subclasse(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
+
         df_estabelecimentos_tamanho = carregar_dados_estabelecimentos_tamanho(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
 
         # --- Dados Secundários (Página Comércio Exterior) ---
         df_comex_ano = carregar_dados_comex_anual(
-            municipios=municipios_de_interesse, anos=anos_comex
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_comex_municipio = carregar_dados_comex_municipio(
-            municipio=municipio_de_interesse, anos=anos_comex
+            municipio=municipio_de_interesse, anos=anos_historico
         )
 
         # --- Dados Secundários (Página Segurança) ---
         df_seguranca_taxa = carregar_dados_seguranca_taxa(
-            municipios=municipios_de_interesse, anos=anos_de_interesse
+            municipios=municipios_de_interesse, anos=anos_historico
         )
 
         # --- Dados Secundários (Página Educação) ---
@@ -268,7 +294,7 @@ def main():
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
         df_saude_despesas = carregar_dados_saude_despesas(
-            municipios=municipios_de_interesse, anos=anos_de_interesse
+            municipios=municipios_de_interesse, anos=anos_historico
         )
         df_saude_leitos = carregar_dados_saude_leitos(
             municipios=municipios_de_interesse, anos=anos_de_interesse
@@ -319,30 +345,30 @@ def main():
             menu_title="Menu",
             options=[
                 "Início",
-                "Emprego",
-                "Empresas",
-                "Comércio Exterior",
-                "Segurança",
                 "Assistência Social",
-                "Educação",
-                "Saúde",
-                "PIB",
+                "Comércio Exterior",
                 "Demografia",
+                "Educação",
+                "Emprego e Renda",
+                "Empresas",
                 "Finanças",
+                "PIB",
+                "Saúde",
+                "Segurança",
                 "Dados",
             ],
             icons=[
                 "house-door-fill",
+                "people-fill",
+                "globe2",
+                "person-lines-fill",
+                "mortarboard-fill",
                 "briefcase-fill",
                 "building-fill",
-                "globe2",
-                "shield-shaded",
-                "people-fill",
-                "mortarboard-fill",
-                "heart-pulse-fill",
-                "graph-up",
-                "person-lines-fill",
                 "piggy-bank-fill",
+                "graph-up",
+                "heart-pulse-fill",
+                "shield-shaded",
                 "download",
             ],
             menu_icon="cast",
@@ -471,46 +497,14 @@ def main():
                 municipio_de_interesse=municipio_de_interesse,
             )
 
-        if pagina_selecionada == "Emprego":
-            set_emprego_config(
-                municipio_de_interesse, CORES_MUNICIPIOS, ordem_instrucao
+        elif pagina_selecionada == "Assistência Social":
+            set_assistencia_social_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, anos_de_interesse
             )
-            show_page_emprego(
-                df_caged=df_caged_filtrado,
-                df_caged_cnae=df_caged_cnae,
-                df_caged_faixa_etaria=df_caged_faixa_etaria,
-                df_caged_grau_instrucao=df_caged_grau_instrucao,
-                df_caged_raca_cor=df_caged_raca_cor,
-                df_caged_sexo=df_caged_sexo,
-                municipio_de_interesse=municipio_de_interesse,
-                df_estoque=df_estoque_filtrado,
-                df_estoque_cnae=df_estoque_cnae,
-                df_vinculos=df_vinculos_filtrado,
-                df_vinculos_cnae=df_vinculos_cnae,
-                df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
-                df_vinculos_grau_instrucao=df_vinculos_grau_instrucao,
-                df_vinculos_raca_cor=df_vinculos_raca_cor,
-                df_vinculos_sexo=df_vinculos_sexo,
-                df_renda_mun=df_renda_filtrado,
-                df_renda_cnae=df_renda_cnae,
-                df_renda_sexo=df_renda_sexo,
-            )
-
-        elif pagina_selecionada == "Empresas":
-            set_empresas_config(
-                municipio_de_interesse, CORES_MUNICIPIOS, ordem_tamanho_estabelecimentos
-            )
-            show_page_empresas_ativas(
-                df_cnpj=df_cnpj_total_filtrado,
-                df_cnpj_cnae=df_cnpj_cnae,
-                df_cnpj_cnae_saldo=df_cnpj_cnae_saldo,
-                df_mei=df_mei_total_filtrado,
-                df_mei_cnae=df_mei_cnae,
-                df_mei_cnae_saldo=df_mei_cnae_saldo,
-                municipio_de_interesse=municipio_de_interesse,
-                df_estabelecimentos_cnae=df_estabelecimentos_cnae,
-                df_estabelecimentos_mun=df_estabelecimentos_filtrado,
-                df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
+            show_page_assistencia_social(
+                df_cad=df_cad_filtrado,
+                df_bolsa=df_bolsa_familia_filtrado,
+                municipio_interesse=municipio_de_interesse,
             )
 
         elif pagina_selecionada == "Comércio Exterior":
@@ -525,57 +519,6 @@ def main():
                 municipio_de_interesse,
             )
 
-        elif pagina_selecionada == "Segurança":
-            set_seguranca_config(CORES_MUNICIPIOS)
-            show_page_seguranca(df_seguranca_filtrado, df_seguranca_taxa_filtrado)
-
-        elif pagina_selecionada == "Assistência Social":
-            set_assistencia_social_config(municipio_de_interesse, CORES_MUNICIPIOS)
-            show_page_assistencia_social(
-                df_cad=df_cad_filtrado,
-                df_bolsa=df_bolsa_familia_filtrado,
-                municipio_interesse=municipio_de_interesse,
-            )
-
-        elif pagina_selecionada == "Educação":
-            set_educacao_config(CORES_MUNICIPIOS)
-            show_page_educacao(
-                df_matriculas=df_educacao_matriculas_filtrado,
-                df_rendimento=df_educacao_rendimento_filtrado,
-                df_ideb_municipio=df_educacao_ideb_municipio_filtrado,
-                df_ideb_escolas=df_educacao_ideb_escolas_filtrado,
-                municipios_selecionados_global=municipios_selecionados_global,
-            )
-
-        elif pagina_selecionada == "Saúde":
-            set_saude_config(CORES_MUNICIPIOS)
-            show_page_saude(
-                df_saude_mensal=df_saude_mensal_filtrado,
-                df_saude_vacinas=df_saude_vacinas_filtrado,
-                df_saude_leitos=df_saude_leitos_filtrado,
-                df_saude_medicos=df_saude_medicos_filtrado,
-                df_saude_despesas=df_saude_despesas_filtrado,
-            )
-
-        elif pagina_selecionada == "PIB":
-            set_pib_config(CORES_MUNICIPIOS)
-            show_page_pib(df_pib=df_pib_municipios_filtrado)
-
-        elif pagina_selecionada == "Demografia":
-            set_demografia_config(municipio_de_interesse, CORES_MUNICIPIOS)
-            show_page_demografia(
-                df_populacao_densidade=df_populacao_densidade_filtrado,
-                df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
-            )
-
-        elif pagina_selecionada == "Finanças":
-            set_financas_config(CORES_MUNICIPIOS)
-            show_page_financas(
-                df_financas=df_financas_filtrado,
-                df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
-                pdf_indicadores=pdf_indicadores,
-            )
-
         elif pagina_selecionada == "Dados":
             with st.spinner("Carregando os dados para download..."):
                 show_page_dados(
@@ -587,16 +530,13 @@ def main():
                     df_caged_grau_instrucao=df_caged_grau_instrucao,
                     df_caged_sexo=df_caged_sexo,
                     df_estoque=df_estoque_filtrado,
-                    df_estoque_cnae=df_estoque_cnae,
-                    df_vinculos=df_vinculos_filtrado,
-                    df_vinculos_cnae=df_vinculos_cnae,
-                    df_vinculos_faixa_etaria=df_vinculos_faixa_etaria,
-                    df_vinculos_grau_instrucao=df_vinculos_grau_instrucao,
-                    df_vinculos_raca_cor=df_vinculos_raca_cor,
-                    df_vinculos_sexo=df_vinculos_sexo,
+                    df_estoque_cnae_setor=df_estoque_cnae_setor,
+                    df_estoque_cnae_grupo=df_estoque_cnae_grupo,
+                    df_estoque_cnae_subclasse=df_estoque_cnae_subclasse,
                     df_renda_mun=df_renda_filtrado,
                     df_renda_sexo=df_renda_sexo,
                     df_renda_cnae=df_renda_cnae,
+                    df_renda_faixa_salarial=df_renda_faixa_salarial,
                     municipio_de_interesse=municipio_de_interesse,
                     # --- Empresas ---
                     df_cnpj_mun=df_cnpj_total_filtrado,
@@ -606,7 +546,9 @@ def main():
                     df_mei_cnae=df_mei_cnae,
                     df_mei_cnae_saldo=df_mei_cnae_saldo,
                     df_estabelecimentos_mun=df_estabelecimentos_filtrado,
-                    df_estabelecimentos_cnae=df_estabelecimentos_cnae,
+                    df_estabelecimentos_setor=df_estabelecimentos_setor,
+                    df_estabelecimentos_grupo=df_estabelecimentos_grupo,
+                    df_estabelecimentos_subclasse=df_estabelecimentos_subclasse,
                     df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
                     # --- Comércio Exterior ---
                     df_comex_anual_mun=df_comex_ano_filtrado,
@@ -639,6 +581,99 @@ def main():
                     df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
                     pdf_indicadores=pdf_indicadores,
                 )
+
+        elif pagina_selecionada == "Demografia":
+            set_demografia_config(municipio_de_interesse, CORES_MUNICIPIOS)
+            show_page_demografia(
+                df_populacao_densidade=df_populacao_densidade_filtrado,
+                df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
+            )
+
+        elif pagina_selecionada == "Educação":
+            set_educacao_config(CORES_MUNICIPIOS, anos_de_interesse)
+            show_page_educacao(
+                df_matriculas=df_educacao_matriculas_filtrado,
+                df_rendimento=df_educacao_rendimento_filtrado,
+                df_ideb_municipio=df_educacao_ideb_municipio_filtrado,
+                df_ideb_escolas=df_educacao_ideb_escolas_filtrado,
+                municipios_selecionados_global=municipios_selecionados_global,
+            )
+
+        elif pagina_selecionada == "Emprego e Renda":
+            set_emprego_config(
+                municipio_de_interesse,
+                CORES_MUNICIPIOS,
+                ordem_instrucao,
+                ordem_faixa_salarial,
+            )
+            show_page_emprego(
+                df_caged=df_caged_filtrado,
+                df_caged_cnae=df_caged_cnae,
+                df_caged_faixa_etaria=df_caged_faixa_etaria,
+                df_caged_grau_instrucao=df_caged_grau_instrucao,
+                df_caged_raca_cor=df_caged_raca_cor,
+                df_caged_sexo=df_caged_sexo,
+                municipio_de_interesse=municipio_de_interesse,
+                df_estoque=df_estoque_filtrado,
+                df_estoque_cnae_setor=df_estoque_cnae_setor,
+                df_estoque_cnae_grupo=df_estoque_cnae_grupo,
+                df_estoque_cnae_subclasse=df_estoque_cnae_subclasse,
+                df_estoque_faixa_etaria=df_estoque_faixa_etaria,
+                df_estoque_raca_cor=df_estoque_raca_cor,
+                df_estoque_grau_instrucao=df_estoque_grau_instrucao,
+                df_estoque_sexo=df_estoque_sexo,
+                df_renda_mun=df_renda_filtrado,
+                df_renda_cnae=df_renda_cnae,
+                df_renda_sexo=df_renda_sexo,
+                df_renda_faixa_salarial=df_renda_faixa_salarial,
+            )
+
+        elif pagina_selecionada == "Empresas":
+            set_empresas_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, ordem_tamanho_estabelecimentos
+            )
+            show_page_empresas_ativas(
+                df_cnpj=df_cnpj_total_filtrado,
+                df_cnpj_cnae=df_cnpj_cnae,
+                df_cnpj_cnae_saldo=df_cnpj_cnae_saldo,
+                df_cnpj_setor=df_cnpj_setor,
+                df_mei=df_mei_total_filtrado,
+                df_mei_cnae=df_mei_cnae,
+                df_mei_cnae_saldo=df_mei_cnae_saldo,
+                df_mei_setor=df_mei_setor,
+                municipio_de_interesse=municipio_de_interesse,
+                df_estabelecimentos_setor=df_estabelecimentos_setor,
+                df_estabelecimentos_grupo=df_estabelecimentos_grupo,
+                df_estabelecimentos_subclasse=df_estabelecimentos_subclasse,
+                df_estabelecimentos_mun=df_estabelecimentos_filtrado,
+                df_estabelecimentos_tamanho=df_estabelecimentos_tamanho,
+            )
+
+        elif pagina_selecionada == "Finanças":
+            set_financas_config(CORES_MUNICIPIOS)
+            show_page_financas(
+                df_financas=df_financas_filtrado,
+                df_indicadores_financeiros=df_indicadores_financeiros_filtrado,
+                pdf_indicadores=pdf_indicadores,
+            )
+
+        elif pagina_selecionada == "PIB":
+            set_pib_config(CORES_MUNICIPIOS)
+            show_page_pib(df_pib=df_pib_municipios_filtrado)
+
+        elif pagina_selecionada == "Saúde":
+            set_saude_config(CORES_MUNICIPIOS, anos_de_interesse)
+            show_page_saude(
+                df_saude_mensal=df_saude_mensal_filtrado,
+                df_saude_vacinas=df_saude_vacinas_filtrado,
+                df_saude_leitos=df_saude_leitos_filtrado,
+                df_saude_medicos=df_saude_medicos_filtrado,
+                df_saude_despesas=df_saude_despesas_filtrado,
+            )
+
+        elif pagina_selecionada == "Segurança":
+            set_seguranca_config(CORES_MUNICIPIOS, anos_de_interesse)
+            show_page_seguranca(df_seguranca_filtrado, df_seguranca_taxa_filtrado)
 
         manter_posicao_scroll()
 
