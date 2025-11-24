@@ -63,6 +63,7 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_cnpj_total,  # noqa: E402
     carregar_dados_educacao_matriculas,  # noqa: E402
     carregar_dados_educacao_ideb_municipio,  # noqa: E402
+    carregar_dados_educacao_saers,  # noqa: E402
     carregar_dados_pib_municipios,  # noqa: E402
     carregar_dados_saude_mensal,  # noqa: E402
     carregar_dados_populacao_densidade,  # noqa: E402
@@ -288,6 +289,9 @@ def main():
         df_educacao_ideb_escolas = carregar_dados_educacao_ideb_escolas(
             municipios=municipios_de_interesse
         )
+        df_educacao_saers = carregar_dados_educacao_saers(
+            municipios=municipios_de_interesse, anos=anos_de_interesse
+        )
 
         # --- Dados Secundários (Página Saúde) ---
         df_saude_vacinas = carregar_dados_saude_vacinas(
@@ -421,6 +425,9 @@ def main():
     ]
     df_educacao_ideb_municipio_filtrado = df_educacao_ideb_municipio[
         df_educacao_ideb_municipio["municipio"].isin(municipios_selecionados_global)
+    ]
+    df_educacao_saers_filtrado = df_educacao_saers[
+        df_educacao_saers["municipio"].isin(municipios_selecionados_global)
     ]
     df_saude_mensal_filtrado = df_saude_mensal[
         df_saude_mensal["municipio"].isin(municipios_selecionados_global)
@@ -565,6 +572,7 @@ def main():
                     df_educacao_rendimento=df_educacao_rendimento,
                     df_educacao_ideb_municipio=df_educacao_ideb_municipio,
                     df_educacao_ideb_escolas=df_educacao_ideb_escolas,
+                    df_educacao_saers=df_educacao_saers_filtrado,
                     # --- Saúde ---
                     df_saude_mensal=df_saude_mensal,
                     df_saude_vacinas=df_saude_vacinas,
@@ -596,6 +604,7 @@ def main():
                 df_rendimento=df_educacao_rendimento_filtrado,
                 df_ideb_municipio=df_educacao_ideb_municipio_filtrado,
                 df_ideb_escolas=df_educacao_ideb_escolas_filtrado,
+                df_saers=df_educacao_saers_filtrado,
                 municipios_selecionados_global=municipios_selecionados_global,
             )
 
@@ -683,3 +692,5 @@ def main():
 # ==============================================================================
 if __name__ == "__main__":
     main()
+
+# %%
