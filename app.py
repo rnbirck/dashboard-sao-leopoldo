@@ -111,6 +111,7 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_saude_leitos,  # noqa: E402
     carregar_dados_saude_medicos,  # noqa: E402
     carregar_dados_saude_vacinas,  # noqa: E402
+    carregar_dados_saude_obitos_tipo,  # noqa: E402
 )
 
 
@@ -318,6 +319,9 @@ def main():
         )
         df_saude_medicos = carregar_dados_saude_medicos(
             municipios=municipios_de_interesse, anos=anos_de_interesse
+        )
+        df_saude_obitos_tipo = carregar_dados_saude_obitos_tipo(
+            municipio=municipio_de_interesse, anos=anos_historico
         )
 
     # ==============================================================================
@@ -700,13 +704,16 @@ def main():
             show_page_pib(df_pib=df_pib_municipios_filtrado)
 
         elif pagina_selecionada == "Saúde":
-            set_saude_config(CORES_MUNICIPIOS, anos_de_interesse)
+            set_saude_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, anos_de_interesse
+            )
             show_page_saude(
                 df_saude_mensal=df_saude_mensal_filtrado,
                 df_saude_vacinas=df_saude_vacinas_filtrado,
                 df_saude_leitos=df_saude_leitos_filtrado,
                 df_saude_medicos=df_saude_medicos_filtrado,
                 df_saude_despesas=df_saude_despesas_filtrado,
+                df_obitos_tipo=df_saude_obitos_tipo,
             )
 
         elif pagina_selecionada == "Segurança":
