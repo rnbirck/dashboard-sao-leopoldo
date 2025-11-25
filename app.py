@@ -29,6 +29,10 @@ from src.config import (  # noqa: E402
 # --- Imports do PACOTE dashboard_core ---
 # Todas as 'views', 'utils' e 'data_loader' vêm do seu pacote central
 from dashboard_core.views.home import show_page_home  # type: ignore # noqa: E402
+from dashboard_core.views.adm_publica import (  # type: ignore # noqa: E402
+    show_page_adm_publica,
+    set_adm_publica_config,
+)
 from dashboard_core.views.emprego import show_page_emprego, set_emprego_config  # type: ignore # noqa: E402
 from dashboard_core.views.comercio_exterior import (  # type: ignore # noqa: E402
     show_page_comex,
@@ -50,6 +54,7 @@ from dashboard_core.utils import carregar_css  # type: ignore # noqa: E402
 from dashboard_core.utils import manter_posicao_scroll  # type: ignore # noqa: E402
 
 from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
+    carregar_dados_adm_publica,  # noqa: E402
     carregar_dados_emprego_municipios,  # noqa: E402
     carregar_dados_vinculos_municipios,  # noqa: E402
     carregar_dados_estoque_municipios,
@@ -131,6 +136,9 @@ def main():
     # ==============================================================================
 
     with st.spinner("Carregando todos os dados da aplicação... Por favor, aguarde."):
+        df_adm_publica = carregar_dados_adm_publica(
+            municipios=municipios_de_interesse, anos=anos_de_interesse
+        )
         df_caged = carregar_dados_emprego_municipios(
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
@@ -354,6 +362,7 @@ def main():
             menu_title="Menu",
             options=[
                 "Início",
+                "Administração Pública",
                 "Assistência Social",
                 "Comércio Exterior",
                 "Demografia",
@@ -368,6 +377,7 @@ def main():
             ],
             icons=[
                 "house-door-fill",
+                "bank2",
                 "people-fill",
                 "globe2",
                 "person-lines-fill",
@@ -397,6 +407,10 @@ def main():
     # FILTRAGEM GLOBAL DE TODOS OS DADOS
     # ==============================================================================
     # --- Filtros Essenciais (Mult-Município) ---
+    df_adm_publica_filtrado = df_adm_publica[
+        df_adm_publica["municipio"].isin(municipios_selecionados_global)
+    ]
+
     df_caged_filtrado = df_caged[
         df_caged["municipio"].isin(municipios_selecionados_global)
     ]
@@ -490,6 +504,7 @@ def main():
     with placeholder.container():
         if pagina_selecionada == "Início":
             show_page_home(
+                df_adm_publica=df_adm_publica_filtrado,
                 df_emprego=df_caged_filtrado,
                 df_estoque=df_estoque_filtrado,
                 df_comex=df_comex_mensal_filtrado,
@@ -509,6 +524,12 @@ def main():
                 df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
                 municipio_de_interesse=municipio_de_interesse,
             )
+
+        elif pagina_selecionada == "Administração Pública":
+            set_adm_publica_config(
+                municipio_de_interesse, CORES_MUNICIPIOS, anos_de_interesse
+            )
+            show_page_adm_publica(df_adm_publica=df_adm_publica_filtrado)
 
         elif pagina_selecionada == "Assistência Social":
             set_assistencia_social_config(
@@ -535,6 +556,8 @@ def main():
         elif pagina_selecionada == "Dados":
             with st.spinner("Carregando os dados para download..."):
                 show_page_dados(
+                    # --- Administração Pública ---
+                    df_adm_publica=df_adm_publica_filtrado,
                     # --- Emprego ---
                     df_caged=df_caged_filtrado,
                     df_caged_cnae=df_caged_cnae,
