@@ -501,6 +501,7 @@ def main():
                 df_empresas=df_cnpj_total_filtrado,
                 df_educacao_ideb=df_educacao_ideb_municipio_filtrado,
                 df_educacao_matriculas=df_educacao_matriculas_filtrado,
+                df_educacao_saers=df_educacao_saers_filtrado,
                 df_vinculos=df_vinculos_filtrado,
                 df_pib=df_pib_municipios_filtrado,
                 df_saude_mensal=df_saude_mensal_filtrado,
