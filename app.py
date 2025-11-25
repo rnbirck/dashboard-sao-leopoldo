@@ -92,6 +92,7 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_comex_anual,  # noqa: E402
     carregar_dados_comex_municipio,  # noqa: E402
     carregar_dados_seguranca_taxa,  # noqa: E402
+    carregar_dados_seguranca_furtos,  # noqa: E402
     carregar_dados_cnpj_cnae,  # noqa: E402
     carregar_dados_cnpj_setor,  # noqa: E402
     carregar_dados_cnpj_cnae_saldo,  # noqa: E402
@@ -280,6 +281,10 @@ def main():
         # --- Dados Secundários (Página Segurança) ---
         df_seguranca_taxa = carregar_dados_seguranca_taxa(
             municipios=municipios_de_interesse, anos=anos_historico
+        )
+
+        df_seguranca_furtos = carregar_dados_seguranca_furtos(
+            municipio=municipio_de_interesse, anos=anos_historico
         )
 
         # --- Dados Secundários (Página Educação) ---
@@ -682,7 +687,9 @@ def main():
 
         elif pagina_selecionada == "Segurança":
             set_seguranca_config(CORES_MUNICIPIOS, anos_de_interesse)
-            show_page_seguranca(df_seguranca_filtrado, df_seguranca_taxa_filtrado)
+            show_page_seguranca(
+                df_seguranca_filtrado, df_seguranca_taxa_filtrado, df_seguranca_furtos
+            )
 
         manter_posicao_scroll()
 
