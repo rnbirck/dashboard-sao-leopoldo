@@ -612,6 +612,7 @@ def main():
                     df_saude_despesas=df_saude_despesas,
                     df_saude_leitos=df_saude_leitos,
                     df_saude_medicos=df_saude_medicos,
+                    df_saude_obitos_tipo=df_saude_obitos_tipo,
                     # --- PIB ---
                     df_pib_municipios=df_pib_municipios_filtrado,
                     # --- Demografia ---
