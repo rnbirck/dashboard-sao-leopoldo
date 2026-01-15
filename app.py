@@ -71,6 +71,7 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_educacao_saers,  # noqa: E402
     carregar_dados_pib_municipios,  # noqa: E402
     carregar_dados_saude_mensal,  # noqa: E402
+    carregar_dados_saude_mort_prematura,  # noqa: E402
     carregar_dados_populacao_densidade,  # noqa: E402
     carregar_dados_populacao_sexo_idade,  # noqa: E402
     carregar_dados_emprego_cnae,  # noqa: E402
@@ -181,6 +182,9 @@ def main():
             municipios=municipios_de_interesse
         )
         df_saude_mensal = carregar_dados_saude_mensal(
+            municipios=municipios_de_interesse, anos=anos_historico
+        )
+        df_saude_mort_prematura = carregar_dados_saude_mort_prematura(
             municipios=municipios_de_interesse, anos=anos_historico
         )
         df_populacao_densidade = carregar_dados_populacao_densidade(
@@ -455,6 +459,9 @@ def main():
     df_saude_mensal_filtrado = df_saude_mensal[
         df_saude_mensal["municipio"].isin(municipios_selecionados_global)
     ]
+    df_saude_mort_prematura_filtrado = df_saude_mort_prematura[
+        df_saude_mort_prematura["municipio"].isin(municipios_selecionados_global)
+    ]
     df_pib_municipios_filtrado = df_pib_municipios[
         df_pib_municipios["municipio"].isin(municipios_selecionados_global)
     ]
@@ -524,6 +531,7 @@ def main():
                 df_vinculos=df_vinculos_filtrado,
                 df_pib=df_pib_municipios_filtrado,
                 df_saude_mensal=df_saude_mensal_filtrado,
+                df_saude_mort_prematura=df_saude_mort_prematura_filtrado,
                 df_populacao_densidade=df_populacao_densidade_filtrado,
                 df_populacao_sexo_idade=df_populacao_sexo_idade_filtrado,
                 municipio_de_interesse=municipio_de_interesse,
@@ -612,6 +620,7 @@ def main():
                     df_saude_despesas=df_saude_despesas,
                     df_saude_leitos=df_saude_leitos,
                     df_saude_medicos=df_saude_medicos,
+                    df_saude_mort_prematura=df_saude_mort_prematura,
                     df_saude_obitos_tipo=df_saude_obitos_tipo,
                     # --- PIB ---
                     df_pib_municipios=df_pib_municipios_filtrado,
@@ -714,6 +723,7 @@ def main():
                 df_saude_leitos=df_saude_leitos_filtrado,
                 df_saude_medicos=df_saude_medicos_filtrado,
                 df_saude_despesas=df_saude_despesas_filtrado,
+                df_saude_mort_prematura=df_saude_mort_prematura_filtrado,
                 df_obitos_tipo=df_saude_obitos_tipo,
             )
 
