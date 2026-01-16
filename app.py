@@ -113,6 +113,8 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_saude_medicos,  # noqa: E402
     carregar_dados_saude_vacinas,  # noqa: E402
     carregar_dados_saude_obitos_tipo,  # noqa: E402
+    carregar_dados_saude_internacoes_residentes,  # noqa: E402
+    carregar_dados_saude_sisab,  # noqa: E402
 )
 
 
@@ -327,6 +329,12 @@ def main():
         df_saude_obitos_tipo = carregar_dados_saude_obitos_tipo(
             municipio=municipio_de_interesse, anos=anos_historico
         )
+        df_saude_internacoes_residentes = carregar_dados_saude_internacoes_residentes(
+            municipios=municipios_de_interesse, anos=anos_historico
+        )
+        df_saude_sisab = carregar_dados_saude_sisab(
+            municipios=municipios_de_interesse, anos=anos_historico
+        )
 
     # ==============================================================================
     # BARRA LATERAL E NAVEGAÇÃO ENTRE PÁGINAS
@@ -506,6 +514,14 @@ def main():
     df_saude_medicos_filtrado = df_saude_medicos[
         df_saude_medicos["municipio"].isin(municipios_selecionados_global)
     ]
+    df_saude_internacoes_residentes_filtrado = df_saude_internacoes_residentes[
+        df_saude_internacoes_residentes["municipio"].isin(
+            municipios_selecionados_global
+        )
+    ]
+    df_saude_sisab_filtrado = df_saude_sisab[
+        df_saude_sisab["municipio"].isin(municipios_selecionados_global)
+    ]
 
     # ==============================================================================
     # RENDERIZAÇÃO DAS PÁGINAS
@@ -622,6 +638,8 @@ def main():
                     df_saude_medicos=df_saude_medicos,
                     df_saude_mort_prematura=df_saude_mort_prematura,
                     df_saude_obitos_tipo=df_saude_obitos_tipo,
+                    df_saude_internacoes_residentes=df_saude_internacoes_residentes,
+                    df_saude_sisab=df_saude_sisab,
                     # --- PIB ---
                     df_pib_municipios=df_pib_municipios_filtrado,
                     # --- Demografia ---
@@ -723,8 +741,10 @@ def main():
                 df_saude_leitos=df_saude_leitos_filtrado,
                 df_saude_medicos=df_saude_medicos_filtrado,
                 df_saude_despesas=df_saude_despesas_filtrado,
+                df_saude_internacoes_residentes=df_saude_internacoes_residentes_filtrado,
                 df_saude_mort_prematura=df_saude_mort_prematura_filtrado,
                 df_obitos_tipo=df_saude_obitos_tipo,
+                df_saude_sisab=df_saude_sisab_filtrado,
             )
 
         elif pagina_selecionada == "Segurança":
