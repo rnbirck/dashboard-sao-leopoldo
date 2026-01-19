@@ -329,9 +329,26 @@ def main():
         df_saude_obitos_tipo = carregar_dados_saude_obitos_tipo(
             municipio=municipio_de_interesse, anos=anos_historico
         )
-        df_saude_internacoes_residentes = carregar_dados_saude_internacoes_residentes(
-            municipios=municipios_de_interesse, anos=anos_historico
-        )
+
+        # DEBUG: Logging para Railway
+        try:
+            df_saude_internacoes_residentes = (
+                carregar_dados_saude_internacoes_residentes(
+                    municipios=municipios_de_interesse, anos=anos_historico
+                )
+            )
+            if df_saude_internacoes_residentes is None:
+                st.sidebar.warning("⚠️ Internações: retornou None")
+            elif df_saude_internacoes_residentes.empty:
+                st.sidebar.warning(f"⚠️ Internações: DataFrame vazio")
+            else:
+                st.sidebar.success(
+                    f"✓ Internações: {len(df_saude_internacoes_residentes)} registros"
+                )
+        except Exception as e:
+            st.sidebar.error(f"❌ Erro ao carregar internações: {str(e)}")
+            df_saude_internacoes_residentes = None
+
         df_saude_sisab = carregar_dados_saude_sisab(
             municipios=municipios_de_interesse, anos=anos_historico
         )
@@ -514,14 +531,26 @@ def main():
     df_saude_medicos_filtrado = df_saude_medicos[
         df_saude_medicos["municipio"].isin(municipios_selecionados_global)
     ]
-    df_saude_internacoes_residentes_filtrado = df_saude_internacoes_residentes[
-        df_saude_internacoes_residentes["municipio"].isin(
-            municipios_selecionados_global
-        )
-    ]
-    df_saude_sisab_filtrado = df_saude_sisab[
-        df_saude_sisab["municipio"].isin(municipios_selecionados_global)
-    ]
+
+    # Verificação defensiva para internações residentes
+    if (
+        df_saude_internacoes_residentes is not None
+        and not df_saude_internacoes_residentes.empty
+    ):
+        df_saude_internacoes_residentes_filtrado = df_saude_internacoes_residentes[
+            df_saude_internacoes_residentes["municipio"].isin(
+                municipios_selecionados_global
+            )
+        ]
+    else:
+        df_saude_internacoes_residentes_filtrado = None
+
+    if df_saude_sisab is not None and not df_saude_sisab.empty:
+        df_saude_sisab_filtrado = df_saude_sisab[
+            df_saude_sisab["municipio"].isin(municipios_selecionados_global)
+        ]
+    else:
+        df_saude_sisab_filtrado = None
 
     # ==============================================================================
     # RENDERIZAÇÃO DAS PÁGINAS
