@@ -90,6 +90,7 @@ from dashboard_core.data_loader import (  # noqa: E402 # type: ignore
     carregar_dados_renda_ranking,  # noqa: E402
     carregar_dados_renda_cnae,  # noqa: E402
     carregar_dados_renda_sexo,  # noqa: E402
+    carregar_dados_renda_raca_cor,  # noqa: E402
     carregar_dados_renda_faixa_salarial,  # noqa: E402
     carregar_dados_estabelecimentos_municipios,  # noqa: E402
     carregar_dados_estabelecimentos_tamanho,  # noqa: E402
@@ -244,6 +245,9 @@ def main():
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_renda_sexo = carregar_dados_renda_sexo(
+            municipio=municipio_de_interesse, anos=anos_de_interesse
+        )
+        df_renda_raca_cor = carregar_dados_renda_raca_cor(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
         df_renda_faixa_salarial = carregar_dados_renda_faixa_salarial(
@@ -618,9 +622,14 @@ def main():
                     df_estoque_cnae_setor=df_estoque_cnae_setor,
                     df_estoque_cnae_grupo=df_estoque_cnae_grupo,
                     df_estoque_cnae_subclasse=df_estoque_cnae_subclasse,
+                    df_estoque_faixa_etaria=df_estoque_faixa_etaria,
+                    df_estoque_raca_cor=df_estoque_raca_cor,
+                    df_estoque_grau_instrucao=df_estoque_grau_instrucao,
+                    df_estoque_sexo=df_estoque_sexo,
                     df_renda_mun=df_renda_filtrado,
                     df_renda_ranking=df_renda_ranking_filtrado,
                     df_renda_sexo=df_renda_sexo,
+                    df_renda_raca_cor=df_renda_raca_cor,
                     df_renda_cnae=df_renda_cnae,
                     df_renda_faixa_salarial=df_renda_faixa_salarial,
                     municipio_de_interesse=municipio_de_interesse,
@@ -718,6 +727,7 @@ def main():
                 df_renda_ranking=df_renda_ranking_filtrado,
                 df_renda_cnae=df_renda_cnae,
                 df_renda_sexo=df_renda_sexo,
+                df_renda_raca_cor=df_renda_raca_cor,
                 df_renda_faixa_salarial=df_renda_faixa_salarial,
             )
 
