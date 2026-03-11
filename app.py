@@ -619,6 +619,7 @@ def main():
                     df_estoque_cnae_grupo=df_estoque_cnae_grupo,
                     df_estoque_cnae_subclasse=df_estoque_cnae_subclasse,
                     df_renda_mun=df_renda_filtrado,
+                    df_renda_ranking=df_renda_ranking_filtrado,
                     df_renda_sexo=df_renda_sexo,
                     df_renda_cnae=df_renda_cnae,
                     df_renda_faixa_salarial=df_renda_faixa_salarial,
