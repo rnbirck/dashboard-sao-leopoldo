@@ -276,6 +276,22 @@ def main():
         df_mei_setor = carregar_dados_mei_setor(
             municipio=municipio_de_interesse, anos=anos_de_interesse
         )
+
+        # Fallback defensivo: se a tabela base de CNAE vier vazia,
+        # usa a versão de saldo (que contém as mesmas dimensões base).
+        cnae_cols = [
+            "municipio",
+            "ano",
+            "mes",
+            "grupo",
+            "grupo_ibge",
+            "empresas_ativas",
+        ]
+        if df_cnpj_cnae.empty:
+            df_cnpj_cnae = df_cnpj_cnae_saldo.reindex(columns=cnae_cols).copy()
+        if df_mei_cnae.empty:
+            df_mei_cnae = df_mei_cnae_saldo.reindex(columns=cnae_cols).copy()
+
         df_estabelecimentos = carregar_dados_estabelecimentos_municipios(
             municipios=municipios_de_interesse, anos=anos_de_interesse
         )
