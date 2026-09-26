@@ -1,5 +1,5 @@
 streamlit==1.49.1
 streamlit-option-menu==0.4.0
 python-dotenv==1.0.1
-dashboard_core @ git+https://github.com/rnbirck/dashboard-prefeituras-core.git@44a4370622df8ba49f740c8f8a10edcfaa637109
+dashboard_core @ git+https://github.com/rnbirck/dashboard-prefeituras-core.git@c4f812bd1b583d83782c6346f8098b043982cbe7
 matplotlib
